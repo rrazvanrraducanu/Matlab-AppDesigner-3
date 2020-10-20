@@ -1,0 +1,95 @@
+classdef app3 < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        UIFigure                     matlab.ui.Figure
+        InsertmessageEditFieldLabel  matlab.ui.control.Label
+        InsertmessageEditField       matlab.ui.control.EditField
+        ShowmsgButton                matlab.ui.control.Button
+        ImpliedmsgButton             matlab.ui.control.Button
+        HidemsgButton                matlab.ui.control.Button
+    end
+
+    methods (Access = private)
+
+        % Button pushed function: ShowmsgButton
+        function ShowmsgButtonPushed(app, event)
+            app.InsertmessageEditField.Value="Bau!";
+        end
+
+        % Button pushed function: ImpliedmsgButton
+        function ImpliedmsgButtonPushed(app, event)
+            app.InsertmessageEditField.Value="Implied message";
+        end
+
+        % Button pushed function: HidemsgButton
+        function HidemsgButtonPushed(app, event)
+            app.InsertmessageEditField.Value="";
+        end
+    end
+
+    % App initialization and construction
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create UIFigure
+            app.UIFigure = uifigure;
+            app.UIFigure.Position = [100 100 640 480];
+            app.UIFigure.Name = 'UI Figure';
+
+            % Create InsertmessageEditFieldLabel
+            app.InsertmessageEditFieldLabel = uilabel(app.UIFigure);
+            app.InsertmessageEditFieldLabel.HorizontalAlignment = 'right';
+            app.InsertmessageEditFieldLabel.Position = [151 394 88 22];
+            app.InsertmessageEditFieldLabel.Text = 'Insert message';
+
+            % Create InsertmessageEditField
+            app.InsertmessageEditField = uieditfield(app.UIFigure, 'text');
+            app.InsertmessageEditField.Position = [254 394 100 22];
+
+            % Create ShowmsgButton
+            app.ShowmsgButton = uibutton(app.UIFigure, 'push');
+            app.ShowmsgButton.ButtonPushedFcn = createCallbackFcn(app, @ShowmsgButtonPushed, true);
+            app.ShowmsgButton.Position = [52 325 100 22];
+            app.ShowmsgButton.Text = 'Show msg';
+
+            % Create ImpliedmsgButton
+            app.ImpliedmsgButton = uibutton(app.UIFigure, 'push');
+            app.ImpliedmsgButton.ButtonPushedFcn = createCallbackFcn(app, @ImpliedmsgButtonPushed, true);
+            app.ImpliedmsgButton.Position = [191 325 100 22];
+            app.ImpliedmsgButton.Text = 'Implied msg';
+
+            % Create HidemsgButton
+            app.HidemsgButton = uibutton(app.UIFigure, 'push');
+            app.HidemsgButton.ButtonPushedFcn = createCallbackFcn(app, @HidemsgButtonPushed, true);
+            app.HidemsgButton.Position = [336 325 100 22];
+            app.HidemsgButton.Text = 'Hide msg';
+        end
+    end
+
+    methods (Access = public)
+
+        % Construct app
+        function app = app3
+
+            % Create and configure components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.UIFigure)
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.UIFigure)
+        end
+    end
+end
